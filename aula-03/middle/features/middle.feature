@@ -1,4 +1,4 @@
-Feature:  Return the middle number is a list of 3 different numbers
+Feature:  Return the middle number in a list of 3 different numbers
 
   Scenario: middle number is in the first place
     Given a list with the numbers (2, 1, 3)

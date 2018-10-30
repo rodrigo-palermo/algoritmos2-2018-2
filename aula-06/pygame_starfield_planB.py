@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PyGame screen example."""
+"""Starfield - plan B - PyGame screen."""
 
 # Using starfield module functions mixed with Starfield class
 
-# Módulos
+# Modules
 import sys
 import pygame
 import starfield

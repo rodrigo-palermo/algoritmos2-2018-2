@@ -1,4 +1,4 @@
-"""Starfield methods."""
+"""Starfield functions."""
 
 import random
 

@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PyGame screen example."""
+"""Moving point with pygame."""
 
-# Módulos
+# Modules
 import sys
 import pygame
-import random
-from pygame.locals import *
+from pygame.locals import K_ESCAPE
 
 # Constants
 WIDTH = 800
@@ -20,6 +19,7 @@ STAR_COLOR = (255, 255, 255)
 # ---------------------------------------------------------------------
 class Star(pygame.sprite.Sprite):
     """Test."""
+
     def __init__(self, color, width, height):
         """Test."""
         pygame.sprite.Sprite.__init__(self)
@@ -72,7 +72,9 @@ def main():
 
         screen.fill(BACKGROUND_COLOR)
 
-        screen.blit(star.image, star.rect)
+        pygame.draw.rect(screen, STAR_COLOR, [500, 300, 30, 30], 0)
+
+        # screen.blit(star.image, star.rect)
 
         pygame.display.flip()
     return 0

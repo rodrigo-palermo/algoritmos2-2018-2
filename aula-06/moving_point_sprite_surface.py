@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Helloworld - PyGame screen example."""
+"""Moving point as sprie surface with pygame."""
 
 # Modules
 import sys

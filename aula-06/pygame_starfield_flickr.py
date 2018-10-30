@@ -1,25 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Starfield - PyGame screen."""
+"""Starfield example - not using convert function, fickr effect."""
 
 # Using only Starfield class methods (derived with modifications from starfield
 # method)
 
-# Módulos
+# Modules
 import sys
 import pygame
 # import starfield
 import random
-# from pygame.locals import K_ESCAPE
+from pygame.locals import K_ESCAPE
 
 # Constants
 WIDTH = 800
 HEIGHT = 600
 BACKGROUND_COLOR = (0, 0, 0)
-STAR_COLOR = (255, 255, 255)
+STARS_COLOR = (255, 255, 255)
 STARS_AMOUNT = 20
-STAR_SIZES = [1, 3]
+STARS_RANGE_SIZE = [1, 3]
 FRAME_RATE = 60
 
 
@@ -31,6 +31,7 @@ class MainStarship(object):
     def __init__(self):
         """Initialize Main Starship."""
         self.image = pygame.image.load('images/star_wars_01_s.png')
+        # .convert()
         self.rect = self.image.get_rect()
 
         self.rect.centerx = WIDTH / 2
@@ -40,26 +41,29 @@ class MainStarship(object):
 class Starfield(object):
     """Starfield class."""
 
-    def __init__(self, stars_amount, stars_color, star_sizes, screen):
+    def __init__(self, stars_amount, stars_color, width, height):
         """Initialize Starfield."""
-        self.stars_amount = stars_amount
-        self.stars_color = stars_color
-        self.star_sizes = star_sizes
+        w = width
+        h = height
         self.stars = self.create_stars_list(stars_amount, x=[0, WIDTH],
-                                            y=[0, HEIGHT], s=[1, 2, 3],
-                                            t=[1, 3])
+                                            y=[0, HEIGHT], s=[1, 2, 3])
         # returns a dictionary
 
         self.starlist = self.stars['list']
         self.moves = self.stars['moves']
 
-        self.screen = screen
+        self.image = []
+        self.rect = []
+        self.speed = []
 
-        # print(self.starlist[0])
-
-    def get_list(self):
-        """."""
-        return self.starlist
+        for i in range(0, len(self.starlist)):
+            self.image.append(pygame.Surface([random.randint(w[0], w[1]),
+                                             random.randint(h[0], h[1])]))
+            self.image[i].fill(stars_color)
+            self.rect.append(self.image[i].get_rect())
+            self.rect[i].centerx = self.starlist[i]['x']
+            self.rect[i].centery = self.starlist[i]['y']
+            # self.speed.append([-self.starlist[i]['s'], 0])
 
     def create_star(self, **kwargs):
         """Create a star given X (X range), Y (Y range) and speed list."""
@@ -79,12 +83,7 @@ class Starfield(object):
         else:
             s = random.choice(kwargs['s'])
 
-        if type(kwargs['t']) == int:
-            t = kwargs['t']
-        else:
-            t = random.choice(kwargs['t'])
-
-        return {'x': x, 'y': y, 's': s, 't': t}
+        return {'x': x, 'y': y, 's': s}
 
     def create_stars_list(self, quantity, **kwargs):
         """Create a list of stars."""
@@ -95,22 +94,6 @@ class Starfield(object):
             stars_list.append(self.create_star(**kwargs))
             index += 1
         return {'list': stars_list, 'moves': moves}
-
-    # TODO: ALTERAR PARA CRIAR UMA LISAT DE ESTRELAS POR FORA? oU POR DENTRO DA
-    # CLASSE, MAS QUE NÃO FIQUEM VARIANDO DE TAMANHO SE PARADAS
-    # oU QUANDO SE MOVER VAI SER INTERESSANTE FICAR DESENHANDO SEMPRE ESTA
-    # LISta
-
-    def _draw(self, i):
-        """."""
-        pygame.draw.rect(self.screen, STAR_COLOR, [self.starlist[i]['x'],
-                         self.starlist[i]['y'], self.starlist[i]['t'],
-                         self.starlist[i]['t']], 0)
-
-    def draw_list(self):
-        """."""
-        for i in range(len(self.starlist)):
-            self._draw(i)
 
     def move_star(self, star):
         """Move a star."""
@@ -130,9 +113,8 @@ class Starfield(object):
         if list_length > 0:
             for i in range(list_length):
                 self.move_star(self.starlist[i])
-        if list_length < STARS_AMOUNT:  # recria estrelas
-            self.starlist.append(self.create_star(x=[0, WIDTH],
-                                 y=[0, HEIGHT], s=[1, 2, 3], t=[1, 3]))
+                self.rect[i].centerx = self.starlist[i]['x']
+
 
 # ---------------------------------------------------------------------
 
@@ -140,8 +122,6 @@ class Starfield(object):
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
-
-
 def main():
     """Run the game."""
     clock = pygame.time.Clock()
@@ -149,10 +129,8 @@ def main():
     pygame.display.set_caption('Space Wars')
     screen.fill(BACKGROUND_COLOR)
 
-    starfield_bg = Starfield(STARS_AMOUNT, STAR_COLOR, STAR_SIZES, screen)
-
-    # sl = starfield_bg.get_list()
-    # print(sl[1]['x'])
+    starfield_bg = Starfield(STARS_AMOUNT, STARS_COLOR, STARS_RANGE_SIZE,
+                             STARS_RANGE_SIZE)
 
     main_starship = MainStarship()
 
@@ -161,20 +139,20 @@ def main():
         time = clock.tick(FRAME_RATE)
         keys = pygame.key.get_pressed()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
+            if event.type == pygame.QUIT or keys[K_ESCAPE]:
                 sys.exit(0)
                 running = False
 
         screen.fill(BACKGROUND_COLOR)
 
-        # if len(starfield_bg.starlist) == 0:
-        #     starfield_bg = Starfield(STARS_AMOUNT, STAR_COLOR,
-        #                              STAR_SIZES,
-        #                              STAR_SIZES, screen)
+        if len(starfield_bg.starlist) == 0:
+            starfield_bg = Starfield(STARS_AMOUNT, STARS_COLOR,
+                                     STARS_RANGE_SIZE,
+                                     STARS_RANGE_SIZE)
 
-        # starfield_bg.move_stars(time)
+        for i in range(len(starfield_bg.starlist)):
+            screen.blit(starfield_bg.image[i], starfield_bg.rect[i])
 
-        starfield_bg.draw_list()
         starfield_bg.move_stars(time)
 
         screen.blit(main_starship.image, main_starship.rect)

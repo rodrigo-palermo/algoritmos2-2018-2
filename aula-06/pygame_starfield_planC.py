@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PyGame screen example."""
+"""Starfield - plan C - PyGame screen."""
 
 # Using Sprites from pygame and coding inside main()
 
-# Módulos
+# Modules
 import sys
 import pygame
 import starfield
 import random
-from pygame.locals import *
+from pygame.locals import K_ESCAPE
 
 # Constants
 WIDTH = 800
@@ -75,7 +75,7 @@ def main():
     # starship = pygame.Surface([10, 10])
     # starship.fill((125, 250, 123))
     starship = pygame.image.load("images/star_wars_01_s.png")
-    speed = [2, 2]
+    # speed = [2, 2]
     starship_rect = starship.get_rect()
     starship_rect.centerx = WIDTH / 2
     starship_rect.centery = HEIGHT / 2

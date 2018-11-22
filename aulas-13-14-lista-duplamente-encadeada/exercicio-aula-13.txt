@@ -1,0 +1,12 @@
+AULA_13
+
+Item
+Inserção ordenada em Lista Encadeada
+Dada uma lista com encadeamento simples, ordenada:
+
+6 -> 8 -> 17 -> 23 -> x
+
+Implementar um método, insert(X), que permita a inclusão de um valor X na lista,
+na posição correta para mantê-la ordenada.
+
+SOLUÇÃO: usar lista duplamente encadeada
